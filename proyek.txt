@@ -1,0 +1,74 @@
+CREATE TABLESPACE project
+DATAFILE 'F:\MATKUL\SMT 4\BASIS DATA\praktikkum\project\project.dbf'
+SIZE 30m;
+
+	create user mnuril_06930
+	identified by nuril
+	default tablespace project
+	quota 30m on project;
+
+grant all privileges to mnuril_06930;
+
+	conn nuril_06930
+
+create table kemenkes(
+id_ditjen int,
+direktorat varchar(20),
+constraint pk_ditjen primary key (id_ditjen)
+);
+
+	create table upt(
+	id_upt int,id_ditjen int,
+	nama_upt varchar(100),
+	constraint pk_upt primary key (id_upt)
+	);
+
+alter table upt add constraint fk_id_ditjen foreign key (id_ditjen) references kemenkes(id_ditjen);
+
+	create table bidang(
+	id_bidang int,
+	id_upt int,
+	bidang varchar(100),
+	constraint pk_bidang primary key (id_bidang),
+	constraint fk_bidang_upt foreign key (id_upt) references upt (id_upt)
+	);
+
+create table seksi(
+id_seksi int,
+id_bidang int,
+nama_seksi varchar(100),
+constraint pk_seksi primary key (id_seksi),
+constraint fk_seksi_bidang foreign key (id_bidang) references bidang (id_bidang)
+);
+
+
+	create table instalasi(id_instalasi int,
+	id_seksi int,instalasi varchar(100),
+	constraint pk_instalasi primary key (id_instalasi),
+	constraint fk_instalasi_seksi foreign key (id_seksi) references seksi (id_seksi));
+	
+create table pegawai(
+nip int,
+id_instalasi int,
+nama varchar(100),
+alamat varchar(100),
+tlpn varchar(100),
+email varchar(100),
+constraint pk_pegawai primary key (nip),
+constraint fk_pegawai_instalasi foreign key (id_instalasi) references instalasi (id_instalasi)
+);
+
+
+	Alter table pegawai rename column tlpn to o6930_hp;
+
+create sequence id_pegawai
+minvalue 1
+maxvalue 9999
+start with 1
+increment by 1
+cache 30;
+
+
+	ALTER TABLE pegawai ADD UNIQUE(o6930_hp);
+
+alter table pegawai modify o6930_hp number(12);

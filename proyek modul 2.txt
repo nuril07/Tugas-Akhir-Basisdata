@@ -1,0 +1,67 @@
+insert into kemenkes(id_ditjen,direktorat) values (001,'P2P');
+insert into kemenkes(id_ditjen,direktorat) values (002,'Yankes');
+insert into kemenkes(id_ditjen,direktorat) values (003,'Kesmas');
+
+insert all
+	into upt (id_upt,id_ditjen,nama_upt) values (1,001,'BBTKLPP Surabaya')
+	into upt (id_upt,id_ditjen,nama_upt) values (2,001,'BBTKLPP Yogyakarta')
+	into upt (id_upt,id_ditjen,nama_upt) values (3,001,'BBTKLPP Jakarta')
+select 1 from dual;
+
+insert all
+	into bidang (id_bidang,id_upt,bidang) values (1,1,'Bagian Tata Usaha')
+	into bidang (id_bidang,id_upt,bidang) values (2,1,'Bidang ADKL')
+	into bidang (id_bidang,id_upt,bidang) values (3,1,'Bidang Surveilans')
+select 1 from dual;
+
+
+insert all
+	into seksi (id_seksi,id_bidang,nama_seksi) values (1,1,'Ka Subag Umum')
+	into seksi (id_seksi,id_bidang,nama_seksi) values (2,1,'Ka Subag PL')	
+select 1 from dual;
+
+insert all
+	into instalasi (id_instalasi,id_seksi,instalasi) values (1,1,'SarPras')
+	into instalasi (id_instalasi,id_seksi,instalasi) values (2,2,'Humas')
+	into instalasi (id_instalasi,id_seksi,instalasi) values (3,2,'Pengadaan')
+select 1 from dual;
+
+insert all
+	into pegawai (nip,id_instalasi,nama,alamat,no_hp,email) values (123456789,2,'M Nuril Walidi','Bojonegoro',123456789011,'nurilbtkl@gmail.com')
+	into pegawai (nip,id_instalasi,nama,alamat,no_hp,email) values (345678912,2,'Nugroho Anang','Surabaya',123456789013,'anangp@gmail.com')
+	into pegawai (nip,id_instalasi,nama,alamat,no_hp,email) values (567891235,2,'Ratna Ayu','Batu',567891235,'ditayu@gmail.com')
+	into pegawai (nip,id_instalasi,nama,alamat,no_hp,email) values (234567891,1,'Budi Supono','Surabaya',123456789012,'budipono@gmail.com')
+	into pegawai (nip,id_instalasi,nama,alamat,no_hp,email) values (678912345,1,'Khusnul Amin','Malang',123456789,'amin@gmail.com')
+	into pegawai (nip,id_instalasi,nama,alamat,no_hp,email) values (nip.nextval,1,'Ayus Basuki','Gresik',456789123,'ayus@gmail.com')
+	into pegawai (nip,id_instalasi,nama,alamat,no_hp,email) values (nip.nextval,1,'Defit','Gresik',456789123,'defitjemblong@gmail.com')
+select 1 from dual;
+
+select nama,alamat,no_hp,nip from pegawai where alamat like'%S%' and id_instalasi <5;
+
+select * from pegawai where alamat ='bojonegoro' and nip id_instalasi <=5;
+
+select * from pegawai where id_instalasi =2;
+
+select * from pegawai where alamat ='madiun' or nip id_instalasi =5 or nip = 456789123;
+
+delete from pegawai where alamat = 'surabaya' and alamat = 'madiun' and alamat ='sidoarjo';
+
+DELETE FROM pegawai
+WHERE alamat = 'Surabaya'
+AND nama = 'hendra';
+
+DELETE FROM pegawai WHERE alamat = 'surabaya' AND id_instalasi > 1;
+
+update pegawai set alamat ='Sidoarjo',nama ='hendra wijaya',email ='hendra@yahoo.com',no_hp ='123123',id_instalasi = '2' where nip = 234567891;
+update pegawai set nip =nip.nextval,nama ='bayu',email ='hendra@yahoo.com',no_hp ='123123',id_instalasi = '2' where nip = 234567891;
+update pegawai set nip =nip.nextval where nip = 123456789;
+update pegawai set nip =nip.nextval where nip = 456789123;
+update pegawai set alamat = 'Surabaya' where id_instalasi = 2; 
+
+create sequence nip
+minvalue 1
+maxvalue 9999
+start with 1
+increment by 1
+cache 30;
+

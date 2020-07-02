@@ -1,0 +1,104 @@
+insert all
+    into pegawai_06930(id_pegawai,nama_depan,nama_belakang,tanggal_lahir,alamat,kode_pos,no_telp
+    )values(6,'Budi','Supono',to_date('01/10/1988','dd/mm/yyyy'),'Sidoarjo',69198,'678912345')
+    into pegawai_06930(id_pegawai,nama_depan,nama_belakang,tanggal_lahir,alamat,kode_pos,no_telp
+    )values(7,'Hendra','Widjajanto',to_date('25/10/1987','dd/mm/yyyy'),'Madura',6971,'789123456')
+    into pegawai_06930(id_pegawai,nama_depan,nama_belakang,tanggal_lahir,alamat,kode_pos,no_telp
+    )values(8,'Wahyu','Hari',to_date('08/01/1975','dd/mm/yyyy'),'Sidoarjo',6916,'891234567')
+    into pegawai_06930(id_pegawai,nama_depan,nama_belakang,tanggal_lahir,alamat,kode_pos,no_telp
+    )values(9,'Nugroho','Anang',to_date('06/11/1978','dd/mm/yyyy'),'Rungkut',67911,'912345678')
+    into pegawai_06930(id_pegawai,nama_depan,nama_belakang,tanggal_lahir,alamat,kode_pos,no_telp
+    )values(10,'Dita','Ayu',to_date('31/05/1988','dd/mm/yyyy'),'Sukolilo',6901,'1023456789')
+select 1 from dual;
+
+insert all
+    into pelanggan_06930(id_pelanggan,nama_depan,nama_belakang,tanggal_lahir,alamat,kode_pos,no_telp
+    )values(6,'hari','yono',to_date('31/10/1968','dd/mm/yyyy'),'Lombok',6919,'123456789')
+    into pelanggan_06930(id_pelanggan,nama_depan,nama_belakang,tanggal_lahir,alamat,kode_pos,no_telp
+    )values(7,'luluk','Nuraini',to_date('25/01/1989','dd/mm/yyyy'),'Madura',6971,'234567891')
+    into pelanggan_06930(id_pelanggan,nama_depan,nama_belakang,tanggal_lahir,alamat,kode_pos,no_telp
+    )values(8,'Muhammad','Falah',to_date('08/01/1990','dd/mm/yyyy'),'Sidoarjo',6916,'345678912')
+    into pelanggan_06930(id_pelanggan,nama_depan,nama_belakang,tanggal_lahir,alamat,kode_pos,no_telp
+    )values(9,'tria','Abdilah',to_date('06/11/1995','dd/mm/yyyy'),'Jupiter',67911,'456789123')
+    into pelanggan_06930(id_pelanggan,nama_depan,nama_belakang,tanggal_lahir,alamat,kode_pos,no_telp
+    )values(10,'Arizal','Junaidi',to_date('31/05/1993','dd/mm/yyyy'),'Pluto',6901,'567891234')
+select 1 from dual;
+
+select id_kategori, max(stok_produk) as 
+terbanyak, min(stok_produk) as terendah from produk_06930
+group by id_kategori;
+
+select id_pemesanan, count(id_pemesanan) as banyak_transaksi 
+from detail_pemesanan where id_pemesanan = 100 group by id_pemesanan;
+
+SELECT SUM(id_kategori)
+FROM produk_06930;
+
+SELECT AVG (id_kategori)
+FROM produk_06930;
+
+select id_kategori, stok_produk
+from produk_06930
+where stok_produk = (select min(stok_produk) from produk_06930);
+
+SELECT id_kategori,AVG(harga_satuan) 
+FROM produk_06930   
+GROUP BY id_kategori   
+HAVING AVG(harga_satuan)<           
+(SELECT MAX(AVG(harga_satuan))            
+FROM produk_06930             
+WHERE id_kategori IN                 
+(SELECT id_kategori FROM produk_06930                  
+WHERE id_pemasok                   
+BETWEEN 50 AND 100)             
+GROUP BY id_kategori);
+
+SELECT id_kategori FROM produk_06930  
+WHERE stok_produk      
+BETWEEN 50 AND 100;
+
+SELECT id_kategori,AVG(Harga_Satuan) 
+FROM produk_06930   
+GROUP BY id_kategori   
+HAVING AVG(harga_satuan)<10000;
+
+SELECT *
+FROM nama_produk
+WHERE harga_satuan<.12;
+
+SELECT id_pegawai, no_telp, nama_depan, nama_belakang
+FROM pegawai_06930 a
+WHERE NOT EXISTS
+(SELECT id_pegawai
+FROM pegawai_06930 b
+WHERE b.no_telp = a.id_pegawai);
+
+select id_produk,id_pemasok,id_kategori,harga_satuan
+from produk_06930
+where (id_pemasok,harga_satuan) in 
+(select id_pemasok, min(harga_satuan)
+from produk_06930
+group by id_pemasok);
+
+SELECT
+ id_produk, SUM(harga_satuan) AS Hasil
+ FROM produk_06930
+ GROUP BY id_produk ;
+
+SELECT count(*)
+FROM 
+  (
+    SELECT *
+    FROM pegawai_06930
+    WHERE nama_depan LIKE 'b%' and nama_belakang like'i%'
+  );
+
+SELECT nama_produk, avg(harga_satuan) 
+FROM produk_06930 
+GROUP BY nama_produk 
+HAVING avg(harga_satuan) > (  
+	SELECT avg(harga_satuan) 
+	FROM produk_06930
+);
+
+SELECT * FROM produk_06930 WHERE ID IN (SELECT ID FROM STAFF WHERE SALARY > 4500) ;

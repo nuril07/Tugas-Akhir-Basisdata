@@ -1,0 +1,71 @@
+insert all
+	into seksi (id_seksi,id_bidang,nama_seksi) values (3,002,'kimia dan fisik')
+	into seksi (id_seksi,id_bidang,nama_seksi) values (4,002,'Biologi')	
+	into seksi (id_seksi,id_bidang,nama_seksi) values (5,003,'Pengkajian KLB')
+ 	into seksi (id_seksi,id_bidang,nama_seksi) values (6,003,'PTM')
+	into seksi (id_seksi,id_bidang,nama_seksi) values (7,004,'TTG')
+	into seksi (id_seksi,id_bidang,nama_seksi) values (8,004,'Pengembangan Laboratorium')
+select 1 from dual;
+
+insert all
+	into instalasi (id_instalasi,id_seksi,instalasi) values (4,1,'Keuangan')
+	into instalasi (id_instalasi,id_seksi,instalasi) values (5,1,'Diklat')
+	into instalasi (id_instalasi,id_seksi,instalasi) values (6,1,'BMN')
+	into instalasi (id_instalasi,id_seksi,instalasi) values (7,1,'UPP')
+	into instalasi (id_instalasi,id_seksi,instalasi) values (8,1,'Kearsipan')	
+select 1 from dual;
+
+insert all
+	into pegawai (nip,id_instalasi,nama,alamat,no_hp,email) values (nip.nextval,2,'','Bojonegoro',123456789011,'nurilbtkl@gmail.com')
+	into pegawai (nip,id_instalasi,nama,alamat,no_hp,email) values (345678912,2,'Nugroho Anang','Surabaya',123456789013,'anangp@gmail.com')
+	into pegawai (nip,id_instalasi,nama,alamat,no_hp,email) values (567891235,2,'Ratna Ayu','Batu',567891235,'ditayu@gmail.com')
+	into pegawai (nip,id_instalasi,nama,alamat,no_hp,email) values (234567891,1,'Budi Supono','Surabaya',123456789012,'budipono@gmail.com')
+	into pegawai (nip,id_instalasi,nama,alamat,no_hp,email) values (678912345,1,'Khusnul Amin','Malang',123456789,'amin@gmail.com')
+	into pegawai (nip,id_instalasi,nama,alamat,no_hp,email) values (nip.nextval,1,'Ayus Basuki','Gresik',456789123,'ayus@gmail.com')
+	into pegawai (nip,id_instalasi,nama,alamat,no_hp,email) values (nip.nextval,1,'Defit','Gresik',456789123,'defitjemblong@gmail.com')
+select 1 from dual;
+
+insert into bidang (id_bidang,id_upt,bidang) values (4,1,'Bidang PTL');
+
+select a.id_instalasi, a.nama_instalasi, b.tipe_unit, b.merk_unit
+	from konsumen_06926 a inner join unit_06926 b
+	on a.no_kontrak = b.no_kontrak order by a.no_kontrak;
+
+select a.instalasi, a.id_instalasi, b.nama, b.nip, 
+(select nama_seksi from seksi where 
+a.id_seksi = seksi.id_seksi) Nama_seksi
+	from instalasi a left join pegawai b
+	on a.id_instalasi = b.id_instalasi;
+
+select a.instalasi, a.id_instalasi, b.nama, b.nip, 
+(select nama_seksi from seksi where 
+a.id_seksi = seksi.id_seksi) Nama_seksi
+	from instalasi a right join pegawai b
+	on a.id_instalasi = b.id_instalasi
+	order by nip desc;
+
+
+create view data_pegawai 
+as select a.instalasi, a.id_instalasi, b.nama, b.nip, 
+(select nama_seksi from seksi where 
+a.id_seksi = seksi.id_seksi) Nama_seksi
+	from instalasi a right join pegawai b
+	on a.id_instalasi = b.id_instalasi
+	order by nip desc;
+
+select id_seksi, b.nama_instalasi, c.nama_pegawai
+	from seksi a
+	right join instalasi b
+	on a.id_seksi = b.id_seksi
+	right join seksi c 
+	on c.id_seksi = a.id_seksi
+	where a.id_seksi > 2
+	group by nama
+	order by id_instalasi desc;
+
+create view insert_pegawai
+	as
+	select nip,id_instalasi,nama,alamat,no_hp,email
+	from pegawai;
+
+insert into insert_pegawai (nip,id_instalasi,nama,alamat,no_hp,email) values (nip.nextval,2,'Santi','Kediri',85875587,'paramitasanti@gmail.com');
